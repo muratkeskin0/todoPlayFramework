@@ -1,0 +1,33 @@
+@*
+ * Form Input Component
+ * Reusable text input field with validation
+ *@
+@(
+    field: play.api.data.Field,
+    inputType: String = "text",
+    label: String,
+    placeholder: String = "",
+    required: Boolean = false,
+    autofocus: Boolean = false
+)(implicit messagesProvider: play.api.i18n.MessagesProvider)
+
+<div class="field">
+    <label class="label">
+        @label @if(required) {<span class="has-text-danger">*</span>}
+    </label>
+    <div class="control">
+        <input 
+            type="@inputType"
+            name="@field.name"
+            id="@field.name"
+            class="input @if(field.hasErrors) {is-danger}"
+            value="@field.value.getOrElse("")"
+            placeholder="@placeholder"
+            @if(required) {required}
+            @if(autofocus) {autofocus}>
+    </div>
+    @field.error.map { error =>
+        <p class="help is-danger">@messagesProvider.messages(error.message, error.args: _*)</p>
+    }
+</div>
+

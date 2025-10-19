@@ -1,0 +1,23 @@
+@*
+ * Form Checkbox Component
+ * Reusable checkbox field
+ *@
+@(
+    field: play.api.data.Field,
+    label: String
+)
+
+<div class="field">
+    <div class="control">
+        <label class="checkbox">
+            <input 
+                type="checkbox"
+                name="@field.name"
+                id="@field.name"
+                value="true"
+                @if(field.value.contains("true")) {checked}>
+            @label
+        </label>
+    </div>
+</div>
+

@@ -1,0 +1,26 @@
+@*
+ * Form Textarea Component
+ * Reusable textarea field with validation
+ *@
+@(
+    field: play.api.data.Field,
+    label: String,
+    placeholder: String = "",
+    rows: Int = 3
+)(implicit messagesProvider: play.api.i18n.MessagesProvider)
+
+<div class="field">
+    <label class="label">@label</label>
+    <div class="control">
+        <textarea 
+            name="@field.name"
+            id="@field.name"
+            class="textarea @if(field.hasErrors) {is-danger}"
+            rows="@rows"
+            placeholder="@placeholder">@field.value.getOrElse("")</textarea>
+    </div>
+    @field.error.map { error =>
+        <p class="help is-danger">@messagesProvider.messages(error.message, error.args: _*)</p>
+    }
+</div>
+

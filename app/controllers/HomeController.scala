@@ -22,9 +22,4 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index())
   }
 
-  def index2() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index2("message"))
-  }
-
-
 }

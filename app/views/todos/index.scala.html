@@ -1,0 +1,107 @@
+@import _root_.dto.TodoDTO.TodoResponse
+@import forms.TodoForm
+
+@(todos: Seq[TodoResponse], todoForm: Form[TodoForm.TodoData])(implicit request: MessagesRequestHeader)
+
+@layout("Todo List") {
+    <div class="container">
+        <h1 class="title"> Todo Application</h1>
+
+        <div class="field mb-4">
+            <div class="control">
+                <a href="@routes.HomeController.index()" class="button is-light">
+                    Back to Main
+                </a>
+            </div>
+        </div>
+
+        @* Flash Messages Component *@
+        @components.flashMessages()
+
+        <div class="columns">
+            <div class="column is-8">
+                <div class="box">
+                    <h2 class="subtitle">Todos (@todos.size)</h2>
+                    
+                    @if(todos.isEmpty) {
+                        <div class="notification is-info is-light empty-state">
+                            <p>No todos yet. You can add a new todo using the form on the right.</p>
+                        </div>
+                    } else {
+                        <table class="table is-fullwidth is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(todo <- todos) {
+                                    @components.todoCard(todo)
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+            <div class="column is-4">
+                <div class="box">
+                    <h2 class="subtitle"> Add New Todo</h2>
+                    
+                    @helper.form(routes.TodoController.create(), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(todoForm.hasErrors) {
+                            <div class="notification is-danger is-light">
+                                @todoForm.errors.map { error =>
+                                    <p>@request.messages(error.message, error.args: _*)</p>
+                                }
+                                @todoForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+                        @components.formInput(
+                            field = todoForm("title"),
+                            label = "Title",
+                            placeholder = "e.g. Buy groceries",
+                            required = true
+                        )
+
+                        @components.formTextarea(
+                            field = todoForm("description"),
+                            label = "Description",
+                            placeholder = "Detailed description...",
+                            rows = 3
+                        )
+
+                        @components.formCheckbox(
+                            field = todoForm("completed"),
+                            label = "Mark as completed"
+                        )
+
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth">
+                                    Add Todo
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="box stats-box">
+                    <h3 class="subtitle is-6">Statistics</h3>
+                    <p><strong>Total:</strong> @todos.size</p>
+                    <p><strong>Completed:</strong> @todos.count(_.completed)</p>
+                    <p><strong>Pending:</strong> @todos.count(!_.completed)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

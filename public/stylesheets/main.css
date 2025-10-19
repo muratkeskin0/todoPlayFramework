@@ -1,0 +1,105 @@
+/* Minimal stylesheet for current views */
+
+/* Layout */
+body {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.section { flex: 1; }
+
+/* Simple card */
+.box {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+/* Buttons used in views */
+.button {
+    display: inline-block;
+    border: 1px solid #dbdbdb;
+    background: #f5f5f5;
+    color: #363636;
+    padding: .5rem .75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+.button:hover { background: #eee; }
+.button.is-primary { background: #3273dc; border-color: #3273dc; color: #fff; }
+.button.is-info { background: #209cee; border-color: #209cee; color: #fff; }
+.button.is-warning { background: #ffdd57; border-color: #ffdd57; color: rgba(0,0,0,.8); }
+.button.is-danger { background: #f14668; border-color: #f14668; color: #fff; }
+.button.is-light { background: #fafafa; }
+.button.is-small { padding: .35rem .5rem; font-size: .875rem; }
+.is-fullwidth { width: 100%; }
+.buttons.are-small .button { margin-right: .25rem; }
+
+/* Table */
+.table { width: 100%; background: #fff; border-collapse: collapse; }
+.table thead th { text-align: left; padding: .5rem; border-bottom: 2px solid #dbdbdb; }
+.table tbody td { padding: .5rem; border-top: 1px solid #eee; }
+
+/* Tags */
+.tag { display: inline-block; padding: .2rem .5rem; border-radius: 4px; font-weight: 500; }
+.tag.is-success { background: #48c78e; color: #fff; }
+.tag.is-warning { background: #ffe08a; color: rgba(0,0,0,.7); }
+
+/* Row highlight and text helpers used by todo table */
+.has-background-success-light { background: #effaf3; }
+.has-text-grey { color: #7a7a7a; }
+
+/* Forms (only what we use) */
+.field:not(:last-child) { margin-bottom: 1rem; }
+.help.is-danger { color: #f14668; font-size: .875rem; }
+.is-loading { opacity: .6; pointer-events: none; }
+
+/* Notifications (flash messages) */
+.notification { position: relative; padding: .75rem 2rem .75rem .75rem; border-radius: 4px; margin-bottom: 1rem; }
+.notification .delete { position: absolute; right: .5rem; top: .5rem; }
+.notification.is-success { background: #effaf3; color: #257953; }
+.notification.is-danger { background: #feecf0; color: #cc0f35; }
+.notification.is-warning { background: #fff6da; color: #946c00; }
+.notification.is-info { background: #eef6fc; color: #1d72aa; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(-8px);} to { opacity: 1; transform: translateY(0);} }
+@keyframes slide-out { from { opacity: 1; transform: translateY(0);} to { opacity: 0; transform: translateY(-8px);} }
+.notification { animation: slide-in .2s ease; }
+.notification.is-dismissing { animation: slide-out .2s ease; }
+
+/* Footer (very light) */
+.footer { background: #2c3e50; color: #fff; padding: 2rem 1rem; margin-top: auto; }
+.footer .content { text-align: center; }
+
+/* Utilities used in templates */
+.mb-4 { margin-bottom: 1.5rem; }
+.stats-box { background: #667eea; color: #fff; border-radius: 6px; padding: 1rem; }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 2rem 1rem; color: #7a7a7a; }
+.empty-state-icon { font-size: 2rem; opacity: .5; }
+
+/* Home hero (minimal but pleasant) */
+.welcome-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    margin: 1rem 0 2rem;
+}
+.welcome-hero .title { color: #fff; margin-bottom: .5rem; }
+.welcome-hero .subtitle { color: rgba(255,255,255,.9); margin-bottom: 1.25rem; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: .75rem; margin: 1rem 0 1.5rem; }
+.feature-item { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 1rem; }
+.cta-button { background: linear-gradient(45deg,#ff6b6b,#ee5a24); color:#fff; border:none; border-radius: 999px; padding: .75rem 1.5rem; display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+
+/* Simple animations used in home */
+@keyframes fadeInUp { from { opacity:0; transform: translateY(12px);} to { opacity:1; transform:none;} }
+.animate-fade-in { animation: fadeInUp .35s ease-out; }
+@keyframes pulse { 0%{ transform: scale(1);} 50%{ transform: scale(1.04);} 100%{ transform: scale(1);} }
+.animate-pulse { animation: pulse 2s infinite; }
+

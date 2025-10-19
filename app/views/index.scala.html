@@ -1,6 +1,40 @@
-@()
+@()(implicit request: RequestHeader)
 
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
-  <h1>Staj Okulu</h1>
+@layout("Home") {
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <!-- Welcome Hero Section -->
+        <div class="welcome-hero animate-fade-in">
+          <h1 class="title"> Welcome to Todo App!</h1>
+          <p class="subtitle">
+            A task management application - Built with Scala Play Framework
+          </p>
+          
+          <div class="feature-grid">
+            <div class="feature-item">
+              <span class="text">Add your todos</span>
+            </div>
+            <div class="feature-item">
+              <span class="text">Edit them</span>
+            </div>
+            <div class="feature-item">
+              <span class="text">Mark as completed</span>
+            </div>
+            <div class="feature-item">
+              <span class="text">Delete them</span>
+            </div>
+          </div>
+
+          <a href="@routes.TodoController.index()" class="cta-button animate-pulse">
+            <span class="icon">
+              <i class="fas fa-list"></i>
+            </span>
+            <span>Go to Todo List</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
 }

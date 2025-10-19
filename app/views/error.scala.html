@@ -1,0 +1,18 @@
+@(title: String, message: String)(implicit request: RequestHeader)
+
+@layout("Error") {
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                <div class="box has-text-centered">
+                    <p class="empty-state-icon"></p>
+                    <h1 class="title has-text-danger">@title</h1>
+                    <p class="subtitle">@message</p>
+                    <a href="@routes.HomeController.index()" class="button is-primary mt-4">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

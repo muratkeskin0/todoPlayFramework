@@ -1,0 +1,34 @@
+@*
+ * Flash Messages Component
+ * Reusable component for displaying success/error messages
+ *@
+@()(implicit request: RequestHeader)
+
+@request.flash.get("success").map { msg =>
+    <div class="notification is-success" data-notification>
+        <button class="delete" data-notification-close>X</button>
+        @msg
+    </div>
+}
+
+@request.flash.get("error").map { msg =>
+    <div class="notification is-danger" data-notification>
+        <button class="delete" data-notification-close>X</button>
+        @msg
+    </div>
+}
+
+@request.flash.get("warning").map { msg =>
+    <div class="notification is-warning" data-notification>
+        <button class="delete" data-notification-close>X</button>
+        @msg
+    </div>
+}
+
+@request.flash.get("info").map { msg =>
+    <div class="notification is-info" data-notification>
+        <button class="delete" data-notification-close>X</button>
+        @msg
+    </div>
+}
+

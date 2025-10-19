@@ -1,0 +1,21 @@
+@*
+ * Layout template with navbar and footer
+ * Views use this template
+ *@
+@(title: String)(content: Html)(implicit request: RequestHeader)
+
+@main(title) {
+    @* Main Content *@
+    <section class="section">
+        @content
+    </section>
+
+    @* Footer *@
+    <footer class="footer">
+        <div class="content">
+            <p>
+                <strong>Todo App</strong> - Built with Scala Play Framework
+            </p>
+        </div>
+    </footer>
+}

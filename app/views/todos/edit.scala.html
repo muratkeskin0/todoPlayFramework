@@ -1,0 +1,70 @@
+@import forms.TodoForm
+
+@(id: Long, todoForm: Form[TodoForm.TodoData])(implicit request: MessagesRequestHeader)
+
+@layout("Edit Todo") {
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                <div class="box">
+                    <h1 class="title">Edit Todo</h1>
+                    
+                    <a href="@routes.TodoController.index()" class="button is-light is-small mb-4">
+                        Back
+                    </a>
+
+                    @* Flash Messages Component *@
+                    @components.flashMessages()
+
+                    @helper.form(routes.TodoController.update(id), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(todoForm.hasErrors) {
+                            <div class="notification is-danger is-light">
+                                @todoForm.errors.map { error =>
+                                    <p>@request.messages(error.message, error.args: _*)</p>
+                                }
+                                @todoForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+                        @components.formInput(
+                            field = todoForm("title"),
+                            label = "Title",
+                            placeholder = "Todo title",
+                            required = true,
+                            autofocus = true
+                        )
+
+                        @components.formTextarea(
+                            field = todoForm("description"),
+                            label = "Description",
+                            placeholder = "Detailed description...",
+                            rows = 4
+                        )
+
+                        @components.formCheckbox(
+                            field = todoForm("completed"),
+                            label = "Completed"
+                        )
+
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">
+                                     Save
+                                </button>
+                            </div>
+                            <div class="control">
+                                <a href="@routes.TodoController.index()" class="button is-light">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
