@@ -6,6 +6,13 @@
 # Home pages
 GET     /                           controllers.HomeController.index()
 
+# Authentication Routes
+GET     /auth/login                 controllers.AuthController.loginPage()
+POST    /auth/login                 controllers.AuthController.login()
+GET     /auth/register              controllers.AuthController.registerPage()
+POST    /auth/register              controllers.AuthController.register()
+GET     /auth/logout                controllers.AuthController.logout()
+
 # View-based Todo Routes (Server-Side Rendering)
 GET     /todos                      controllers.TodoController.index()
 POST    /todos                      controllers.TodoController.create()
@@ -13,6 +20,14 @@ GET     /todos/:id/edit             controllers.TodoController.edit(id: Long)
 POST    /todos/:id/update           controllers.TodoController.update(id: Long)
 POST    /todos/:id/delete           controllers.TodoController.delete(id: Long)
 POST    /todos/:id/toggle           controllers.TodoController.toggle(id: Long)
+
+# View-based User Routes (Server-Side Rendering)
+GET     /users                      controllers.UserController.index()
+POST    /users                      controllers.UserController.create()
+GET     /users/:id/edit             controllers.UserController.edit(id: Long)
+POST    /users/:id/update           controllers.UserController.update(id: Long)
+POST    /users/:id/delete           controllers.UserController.delete(id: Long)
+POST    /users/:id/toggle           controllers.UserController.toggle(id: Long)
 
 # Static resources
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -1,0 +1,35 @@
+@*
+ * Form Select Component
+ * Reusable select dropdown field with validation
+ *@
+@(
+    field: play.api.data.Field,
+    label: String,
+    options: Seq[(String, String)],
+    placeholder: String = "",
+    required: Boolean = false
+)(implicit messagesProvider: play.api.i18n.MessagesProvider)
+
+<div class="field">
+    <label class="label">
+        @label @if(required) {<span class="has-text-danger">*</span>}
+    </label>
+    <div class="control">
+        <div class="select @if(field.hasErrors) {is-danger}">
+            <select 
+                name="@field.name"
+                id="@field.name"
+                @if(required) {required}>
+                @if(placeholder.nonEmpty) {
+                    <option value="" disabled @if(field.value.isEmpty) {selected}>@placeholder</option>
+                }
+                @for((value, text) <- options) {
+                    <option value="@value" @if(field.value.contains(value)) {selected}>@text</option>
+                }
+            </select>
+        </div>
+    </div>
+    @field.error.map { error =>
+        <p class="help is-danger">@messagesProvider.messages(error.message, error.args: _*)</p>
+    }
+</div>

@@ -1,7 +1,6 @@
-@import _root_.dto.TodoDTO.TodoResponse
 @import forms.TodoForm
 
-@(todos: Seq[TodoResponse], todoForm: Form[TodoForm.TodoData])(implicit request: MessagesRequestHeader)
+@(todos: Seq[models.Todo], todoForm: Form[TodoForm.TodoData])(implicit request: MessagesRequestHeader)
 
 @layout("Todo List") {
     <div class="container">

@@ -41,6 +41,11 @@
 
   <logger name="play" level="INFO"/>
   <logger name="application" level="DEBUG"/>
+  
+  <!-- Custom Request Logging Filter -->
+  <logger name="RequestLoggingFilter" level="INFO"/>
+  <logger name="actors" level="INFO"/>
+  <logger name="services" level="INFO"/>
 
   <root level="WARN">
     <appender-ref ref="ASYNCFILE"/>

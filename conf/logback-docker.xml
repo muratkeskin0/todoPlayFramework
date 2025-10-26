@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+  <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+  <import class="ch.qos.logback.core.ConsoleAppender"/>
+  <import class="ch.qos.logback.core.FileAppender"/>
+
+  <!-- Console Appender (Docker logs için) -->
+  <appender name="STDOUT" class="ConsoleAppender">
+    <encoder class="PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <!-- Docker için clean JSON format -->
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- File Appender (Volume mount için) -->
+  <appender name="FILE" class="FileAppender">
+    <file>/app/logs/application.log</file>
+    <encoder class="PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- RequestLoggingFilter için özel logger -->
+  <logger name="RequestLoggingFilter" level="INFO" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
+  </logger>
+
+  <!-- StartupHook için özel logger -->
+  <logger name="startup" level="INFO" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
+  </logger>
+
+  <logger name="actors" level="INFO"/>
+  <logger name="services" level="INFO"/>
+  <logger name="play" level="INFO"/>
+  <logger name="application" level="DEBUG"/>
+
+  <root level="WARN">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="FILE"/>
+  </root>
+</configuration>
+

@@ -11,7 +11,8 @@ object TodoForm {
   case class TodoData(
     title: String,
     description: Option[String],
-    completed: Boolean
+    completed: Boolean,
+    userId: Option[Long]
   )
 
   val form: Form[TodoData] = Form(
@@ -19,7 +20,8 @@ object TodoForm {
       "title" -> nonEmptyText(maxLength = 255)
         .verifying("Title cannot be empty", _.trim.nonEmpty),
       "description" -> optional(text(maxLength = 5000)),
-      "completed" -> boolean
+      "completed" -> boolean,
+      "userId" -> optional(longNumber)
     )(TodoData.apply)(TodoData.unapply)
   )
 }

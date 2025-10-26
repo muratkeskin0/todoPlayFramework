@@ -103,3 +103,35 @@ body {
 @keyframes pulse { 0%{ transform: scale(1);} 50%{ transform: scale(1.04);} 100%{ transform: scale(1);} }
 .animate-pulse { animation: pulse 2s infinite; }
 
+/* Button container styles */
+.button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+/* CTA Button variants */
+.cta-button.is-admin {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+.cta-button.is-logout {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+}
+
+.cta-button.is-register {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+}
+
+/* Todo card styles */
+.todo-title-completed {
+    text-decoration: line-through;
+}
+
+/* Form styles */
+.inline-form {
+    display: inline;
+}
+

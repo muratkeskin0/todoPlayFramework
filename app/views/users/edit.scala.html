@@ -1,0 +1,92 @@
+@import forms.UserForm
+
+@(id: Long, userForm: Form[UserForm.UserData])(implicit request: MessagesRequestHeader)
+
+@layout("Edit User") {
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                <div class="box">
+                    <h1 class="title">Edit User</h1>
+                    
+                    <a href="@routes.UserController.index()" class="button is-light is-small mb-4">
+                        Back
+                    </a>
+
+                    @* Flash Messages Component *@
+                    @components.flashMessages()
+
+                    @helper.form(routes.UserController.update(id), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(userForm.globalErrors.nonEmpty) {
+                            <div class="notification is-danger is-light">
+                                @userForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+
+                        @components.formInput(
+                            field = userForm("email"),
+                            inputType = "email",
+                            label = "Email",
+                            placeholder = "Email address",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = userForm("password"),
+                            inputType = "password",
+                            label = "Password",
+                            placeholder = "Enter new password",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = userForm("firstName"),
+                            label = "First Name",
+                            placeholder = "First name"
+                        )
+
+                        @components.formInput(
+                            field = userForm("lastName"),
+                            label = "Last Name",
+                            placeholder = "Last name"
+                        )
+
+                        @components.formSelect(
+                            field = userForm("role"),
+                            label = "Role",
+                            options = Seq(
+                                ("basic", "Basic User"),
+                                ("admin", "Administrator")
+                            ),
+                            placeholder = "Select role",
+                            required = true
+                        )
+
+                        @components.formCheckbox(
+                            field = userForm("isActive"),
+                            label = "Active user"
+                        )
+
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">
+                                    Save
+                                </button>
+                            </div>
+                            <div class="control">
+                                <a href="@routes.UserController.index()" class="button is-light">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

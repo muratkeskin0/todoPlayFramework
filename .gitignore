@@ -7,3 +7,14 @@ target
 /.project
 /.settings
 /RUNNING_PID
+
+# Environment files
+.env
+.env.local
+.env.production
+docker-compose.override.yml
+
+# Sensitive files
+*.key
+*.pem
+secrets/

@@ -1,0 +1,73 @@
+@import forms.AuthForm
+
+@(loginForm: Form[AuthForm.LoginData])(implicit request: MessagesRequestHeader)
+
+@layout("Login") {
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-4">
+                <div class="box">
+                    <h1 class="title has-text-centered">Login</h1>
+                    @* Flash Messages Component *@
+                    @components.flashMessages()
+
+                    @helper.form(routes.AuthController.login(), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(loginForm.globalErrors.nonEmpty) {
+                            <div class="notification is-danger is-light">
+                                @loginForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+                        @components.formInput(
+                            field = loginForm("email"),
+                            inputType = "email",
+                            label = "Email",
+                            placeholder = "Enter your email",
+                            required = true,
+                            autofocus = true
+                        )
+
+                        @components.formInput(
+                            field = loginForm("password"),
+                            inputType = "password",
+                            label = "Password",
+                            placeholder = "Enter your password",
+                            required = true
+                        )
+
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="field is-grouped" style="margin-top: 1rem;">
+                        <div class="control">
+                            <a href="@routes.HomeController.index()" class="button is-light is-fullwidth">
+                                <span class="icon">
+                                    <i class="fas fa-home"></i>
+                                </span>
+                                <span>Return Home</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="has-text-centered mt-4">
+                        <p>Don't have an account? 
+                            <a href="@routes.AuthController.registerPage()" class="has-text-primary">
+                                Register here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

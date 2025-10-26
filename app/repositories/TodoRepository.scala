@@ -30,9 +30,10 @@ class TodoRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     def title = column[String]("title")
     def description = column[Option[String]]("description")
     def completed = column[Boolean]("completed")
+    def userId = column[Option[Long]]("user_id")
     def createdAt = column[Instant]("created_at")
 
-    def * = (id.?, title, description, completed, createdAt) <> ((Todo.apply _).tupled, Todo.unapply)
+    def * = (id.?, title, description, completed, userId, createdAt) <> ((Todo.apply _).tupled, Todo.unapply)
   }
 
   private val todos = TableQuery[TodoTable]
@@ -42,6 +43,11 @@ class TodoRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     todos.result
   }
 
+  // Get todos by user
+  override def listByUser(userId: Long): Future[Seq[Todo]] = db.run {
+    todos.filter(_.userId === userId).result
+  }
+
   // Get todo by ID
   override def findById(id: Long): Future[Option[Todo]] = db.run {
     todos.filter(_.id === id).result.headOption
@@ -49,17 +55,17 @@ class TodoRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   // Create new todo
   override def create(todo: Todo): Future[Todo] = db.run {
-    (todos.map(t => (t.title, t.description, t.completed, t.createdAt))
+    (todos.map(t => (t.title, t.description, t.completed, t.userId, t.createdAt))
       returning todos.map(_.id)
-      into ((fields, id) => Todo(Some(id), fields._1, fields._2, fields._3, fields._4))
-      ) += (todo.title, todo.description, todo.completed, todo.createdAt)
+      into ((fields, id) => Todo(Some(id), fields._1, fields._2, fields._3, fields._4, fields._5))
+      ) += (todo.title, todo.description, todo.completed, todo.userId, todo.createdAt)
   }
 
   // Update todo
   override def update(id: Long, todo: Todo): Future[Int] = db.run {
     todos.filter(_.id === id)
-      .map(t => (t.title, t.description, t.completed))
-      .update((todo.title, todo.description, todo.completed))
+      .map(t => (t.title, t.description, t.completed, t.userId))
+      .update((todo.title, todo.description, todo.completed, todo.userId))
   }
 
   // Delete todo
@@ -72,9 +78,19 @@ class TodoRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
     todos.filter(_.completed === true).result
   }
 
+  // Get completed todos by user
+  override def listCompletedByUser(userId: Long): Future[Seq[Todo]] = db.run {
+    todos.filter(t => t.completed === true && t.userId === userId).result
+  }
+
   // Get incomplete todos
   override def listIncomplete(): Future[Seq[Todo]] = db.run {
     todos.filter(_.completed === false).result
+  }
+
+  // Get incomplete todos by user
+  override def listIncompleteByUser(userId: Long): Future[Seq[Todo]] = db.run {
+    todos.filter(t => t.completed === false && t.userId === userId).result
   }
 }
 

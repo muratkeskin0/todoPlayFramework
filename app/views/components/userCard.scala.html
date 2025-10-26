@@ -1,0 +1,59 @@
+@*
+ * User Card Component
+ * Single user row in table
+ *@
+
+@(user: models.User)(implicit request: RequestHeader)
+
+<tr class="@if(!user.isActive) {has-background-warning-light}">
+    <td>
+        @if(user.isActive) {
+            <span class="tag is-success">✓ Active</span>
+        } else {
+            <span class="tag is-warning"> Inactive</span>
+        }
+    </td>
+    <td>
+        @user.email
+    </td>
+    <td>
+        @{
+            val name = (user.firstName, user.lastName) match {
+                case (Some(first), Some(last)) => s"$first $last"
+                case (Some(first), None) => first
+                case (None, Some(last)) => last
+                case (None, None) => "-"
+            }
+            name
+        }
+    </td>
+    <td>
+        @if(user.role.toString == "admin") {
+            <span class="tag is-danger">Admin</span>
+        } else {
+            <span class="tag is-info">Basic</span>
+        }
+    </td>
+    <td>
+        <small class="has-text-grey">
+            @user.createdAt.toString.take(10)
+        </small>
+    </td>
+    <td>
+        <div class="buttons are-small">
+            @helper.form(routes.UserController.toggle(user.id.get), Symbol("style") -> "display:inline") {
+                @helper.CSRF.formField
+                <button type="submit" class="button is-info is-small" title="Toggle Status">
+                    @if(user.isActive) { Deactivate } else { Activate }
+                </button>
+            }
+            
+            <a href="@routes.UserController.edit(user.id.get)" class="button is-warning is-small" title="Edit">Edit</a>
+            
+            @helper.form(routes.UserController.delete(user.id.get), Symbol("style") -> "display:inline", Symbol("class") -> "delete-form") {
+                @helper.CSRF.formField
+                <button type="submit" class="button is-danger is-small" title="Delete">Delete</button>
+            }
+        </div>
+    </td>
+</tr>

@@ -15,6 +15,13 @@ libraryDependencies += "org.postgresql" % "postgresql" % "42.7.3"
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "5.3.1"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "5.3.1"
 
+// Password hashing
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.4"
+
+// Email dependencies
+libraryDependencies += "com.typesafe.play" %% "play-mailer" % "8.0.1"
+libraryDependencies += "com.typesafe.play" %% "play-mailer-guice" % "8.0.1"
+
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "internship_school.controllers._"
 

@@ -2,9 +2,8 @@
  * Todo Card Component
  * Single todo row in table
  *@
-@import _root_.dto.TodoDTO.TodoResponse
 
-@(todo: TodoResponse)(implicit request: RequestHeader)
+@(todo: models.Todo)(implicit request: RequestHeader)
 
 <tr class="@if(todo.completed) {has-background-success-light}">
     <td>
@@ -15,7 +14,7 @@
         }
     </td>
     <td>
-        <strong @if(todo.completed) {style="text-decoration: line-through;"}>
+        <strong class="@if(todo.completed) {todo-title-completed}">
             @todo.title
         </strong>
     </td>
@@ -24,21 +23,21 @@
     </td>
     <td>
         <small class="has-text-grey">
-            @todo.createdAt.take(10)
+            @todo.createdAt.toString.take(10)
         </small>
     </td>
     <td>
         <div class="buttons are-small">
-            @helper.form(routes.TodoController.toggle(todo.id), Symbol("style") -> "display:inline") {
+            @helper.form(routes.TodoController.toggle(todo.id.get), Symbol("class") -> "inline-form") {
                 @helper.CSRF.formField
                 <button type="submit" class="button is-info is-small" title="Toggle Status">
                     @if(todo.completed) { x } else { ✓ }
                 </button>
             }
             
-            <a href="@routes.TodoController.edit(todo.id)" class="button is-warning is-small" title="Edit">Edit</a>
+            <a href="@routes.TodoController.edit(todo.id.get)" class="button is-warning is-small" title="Edit">Edit</a>
             
-            @helper.form(routes.TodoController.delete(todo.id), Symbol("style") -> "display:inline", Symbol("class") -> "delete-form") {
+            @helper.form(routes.TodoController.delete(todo.id.get), Symbol("class") -> "inline-form delete-form") {
                 @helper.CSRF.formField
                 <button type="submit" class="button is-danger is-small" title="Delete">Delete</button>
             }

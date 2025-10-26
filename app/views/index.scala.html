@@ -1,38 +1,91 @@
-@()(implicit request: RequestHeader)
+@(user: Option[models.User], todos: Seq[models.Todo], completedTodos: Seq[models.Todo], incompleteTodos: Seq[models.Todo])(implicit request: RequestHeader)
 
 @layout("Home") {
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-10">
-        <!-- Welcome Hero Section -->
-        <div class="welcome-hero animate-fade-in">
-          <h1 class="title"> Welcome to Todo App!</h1>
-          <p class="subtitle">
-            A task management application - Built with Scala Play Framework
-          </p>
-          
-          <div class="feature-grid">
-            <div class="feature-item">
-              <span class="text">Add your todos</span>
-            </div>
-            <div class="feature-item">
-              <span class="text">Edit them</span>
-            </div>
-            <div class="feature-item">
-              <span class="text">Mark as completed</span>
-            </div>
-            <div class="feature-item">
-              <span class="text">Delete them</span>
-            </div>
-          </div>
+        @user match {
+          case Some(userInfo) => {
+            <!-- User Dashboard -->
+            <div class="welcome-hero animate-fade-in">
+              <h1 class="title">Welcome back, @userInfo.firstName.getOrElse(userInfo.email)!</h1>
+              <p class="subtitle">
+                Manage your tasks and stay organized
+              </p>
 
-          <a href="@routes.TodoController.index()" class="cta-button animate-pulse">
-            <span class="icon">
-              <i class="fas fa-list"></i>
-            </span>
-            <span>Go to Todo List</span>
-          </a>
-        </div>
+              <div class="button-container">
+                <a href="@routes.TodoController.index()" class="cta-button animate-pulse">
+                  <span class="icon">
+                    <i class="fas fa-list"></i>
+                  </span>
+                  <span>Manage Todos</span>
+                </a>
+                
+                @if(userInfo.role.isAdmin) {
+                  <a href="@routes.UserController.index()" class="cta-button animate-pulse is-admin">
+                    <span class="icon">
+                      <i class="fas fa-users"></i>
+                    </span>
+                    <span>Manage Users</span>
+                  </a>
+                }
+                
+                <a href="@routes.AuthController.logout()" class="cta-button is-logout">
+                  <span class="icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </span>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
+          }
+          case None => {
+            <!-- Public Home Page -->
+            <div class="welcome-hero animate-fade-in">
+              <h1 class="title">Welcome to Todo App!</h1>
+              <p class="subtitle">
+                A task management application - Built with Scala Play Framework
+              </p>
+              
+              <div class="feature-grid">
+                <div class="feature-item">
+                  <span class="text">Add your todos</span>
+                </div>
+                <div class="feature-item">
+                  <span class="text">Edit them</span>
+                </div>
+                <div class="feature-item">
+                  <span class="text">Mark as completed</span>
+                </div>
+                <div class="feature-item">
+                  <span class="text">Delete them</span>
+                </div>
+                <div class="feature-item">
+                  <span class="text">Manage users</span>
+                </div>
+                <div class="feature-item">
+                  <span class="text">User roles</span>
+                </div>
+              </div>
+
+              <div class="button-container">
+                <a href="@routes.AuthController.loginPage()" class="cta-button animate-pulse">
+                  <span class="icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                  </span>
+                  <span>Login</span>
+                </a>
+                
+                <a href="@routes.AuthController.registerPage()" class="cta-button animate-pulse is-register">
+                  <span class="icon">
+                    <i class="fas fa-user-plus"></i>
+                  </span>
+                  <span>Register</span>
+                </a>
+              </div>
+            </div>
+          }
+        }
 
       </div>
     </div>

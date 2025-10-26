@@ -1,0 +1,130 @@
+@import forms.UserForm
+
+@(users: Seq[models.User], userForm: Form[UserForm.UserData])(implicit request: MessagesRequestHeader)
+
+@layout("User Management") {
+    <div class="container">
+        <h1 class="title">User Management</h1>
+
+        <div class="field mb-4">
+            <div class="control">
+                <a href="@routes.HomeController.index()" class="button is-light">
+                    Back to Main
+                </a>
+            </div>
+        </div>
+
+        @* Flash Messages Component *@
+        @components.flashMessages()
+
+        <div class="columns">
+            <div class="column is-8">
+                <div class="box">
+                    <h2 class="subtitle">Users (@users.size)</h2>
+                    
+                    @if(users.isEmpty) {
+                        <div class="notification is-info is-light empty-state">
+                            <p>No users yet. You can add a new user using the form on the right.</p>
+                        </div>
+                    } else {
+                        <table class="table is-fullwidth is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for(user <- users) {
+                                    @components.userCard(user)
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+            <div class="column is-4">
+                <div class="box">
+                    <h2 class="subtitle">Add New User</h2>
+                    
+                    @helper.form(routes.UserController.create(), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(userForm.globalErrors.nonEmpty) {
+                            <div class="notification is-danger is-light">
+                                @userForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+
+                        @components.formInput(
+                            field = userForm("email"),
+                            inputType = "email",
+                            label = "Email",
+                            placeholder = "e.g. john@example.com",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = userForm("password"),
+                            inputType = "password",
+                            label = "Password",
+                            placeholder = "Enter password",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = userForm("firstName"),
+                            label = "First Name",
+                            placeholder = "e.g. John"
+                        )
+
+                        @components.formInput(
+                            field = userForm("lastName"),
+                            label = "Last Name",
+                            placeholder = "e.g. Doe"
+                        )
+
+                        @components.formSelect(
+                            field = userForm("role"),
+                            label = "Role",
+                            options = Seq(
+                                ("basic", "Basic User"),
+                                ("admin", "Administrator")
+                            ),
+                            placeholder = "Select role",
+                            required = true
+                        )
+
+                        @components.formCheckbox(
+                            field = userForm("isActive"),
+                            label = "Active user"
+                        )
+
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth">
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="box stats-box">
+                    <h3 class="subtitle is-6">Statistics</h3>
+                    <p><strong>Total:</strong> @users.size</p>
+                    <p><strong>Active:</strong> @users.count(_.isActive)</p>
+                    <p><strong>Inactive:</strong> @users.count(!_.isActive)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

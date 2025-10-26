@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  todo-app:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      - JAVA_OPTS=-Dlogback.configurationFile=conf/logback-docker.xml
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      # Database configuration
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=todo_db
+      - DB_USER=postgres
+      - DB_PASS=macig
+    volumes:
+      # Log'ları host'a mount et
+      - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "service=todo-app"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+      
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: todo_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: macig
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todo_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migration:
+    image: postgres:15
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/migrations
+    command: ["bash", "/migrations/run-migrations.sh"]
+    environment:
+      PGPASSWORD: macig
+
+volumes:
+  postgres_data:
+

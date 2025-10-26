@@ -1,0 +1,17 @@
+@(name: String)
+
+Hello @name,
+
+Welcome to the Todo application! 
+
+You can now start managing your todos. Our application features:
+
+• Adding, editing and deleting todos
+• Marking todos as completed
+• User-friendly interface
+• Secure data storage
+
+You can start creating your todos by logging in right away!
+
+Thank you,
+Todo App Team

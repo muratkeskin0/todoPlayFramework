@@ -1,0 +1,101 @@
+@import forms.AuthForm
+
+@(registerForm: Form[AuthForm.RegisterData])(implicit request: MessagesRequestHeader)
+
+@layout("Register") {
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                <div class="box">
+                    <h1 class="title has-text-centered">Register</h1>
+
+                    @* Flash Messages Component *@
+                    @components.flashMessages()
+
+                    @helper.form(routes.AuthController.register(), Symbol("data-validate") -> "true") {
+                        @helper.CSRF.formField
+                        
+                        @if(registerForm.globalErrors.nonEmpty) {
+                            <div class="notification is-danger is-light">
+                                @registerForm.globalErrors.map { error =>
+                                    <p>@error.message</p>
+                                }
+                            </div>
+                        }
+
+                        @components.formInput(
+                            field = registerForm("email"),
+                            inputType = "email",
+                            label = "Email",
+                            placeholder = "Enter your email",
+                            required = true,
+                            autofocus = true
+                        )
+
+                        @components.formInput(
+                            field = registerForm("password"),
+                            inputType = "password",
+                            label = "Password",
+                            placeholder = "Enter your password",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = registerForm("confirmPassword"),
+                            inputType = "password",
+                            label = "Confirm Password",
+                            placeholder = "Confirm your password",
+                            required = true
+                        )
+
+                        @components.formInput(
+                            field = registerForm("firstName"),
+                            label = "First Name",
+                            placeholder = "Enter your first name"
+                        )
+
+                        @components.formInput(
+                            field = registerForm("lastName"),
+                            label = "Last Name",
+                            placeholder = "Enter your last name"
+                        )
+
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="field is-grouped" style="margin-top: 1rem;">
+                        <div class="control">
+                            <a href="@routes.HomeController.index()" class="button is-light is-fullwidth">
+                                <span class="icon">
+                                    <i class="fas fa-home"></i>
+                                </span>
+                                <span>Return Home</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="has-text-centered mt-4">
+                        <p>Already have an account? 
+                            <a href="@routes.AuthController.loginPage()" class="has-text-primary">
+                                Login here
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="notification is-info is-light mt-4">
+                        <div class="content">
+                            <p><strong>Hoş Geldin Emaili:</strong></p>
+                            <p>Kayıt olduktan sonra email adresinize hoş geldin mesajı gönderilecektir. Hesabınız hemen kullanıma hazır olacaktır.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

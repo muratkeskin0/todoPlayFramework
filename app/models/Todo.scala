@@ -7,6 +7,7 @@ case class Todo(
   title: String,
   description: Option[String] = None,
   completed: Boolean = false,
+  userId: Option[Long] = None, // Foreign key to users table
   createdAt: Instant = Instant.now()
 )
 
